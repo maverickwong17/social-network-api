@@ -48,22 +48,28 @@ module.exports = {
             .then(() => res.json({ message: 'User and associated apps deleted!' }))
             .catch((err) => res.status(500).json(err));
     },
+    // add friend
     addFriend(res, req){
+        console.log ('in add friend')
+        // console.log (req.params.userId)
+        // console.log (req.params.friendId)
         User.findOneAndUpdate(
-        { _id: req.params.userId },
+            { _id: req.params.userId },
         { $addToSet: { friends: req.params.friendId } },
         { new: true }
         )
-        .then((dbThoughtData) => res.json(dbThoughtData))
+        .then((friendData) => res.json(friendData))
         .catch((err) => res.status(500).json(err))
     },
-    removeFriend(res, req){
-        User.findOneAndUpdate(
-        { _id: req.body.userId },
-        { $pull: { friends: req.params.friendId } },
-        { new: true }
-        )
-        .then((dbThoughtData) => res.json(dbThoughtData))
-        .catch((err) => res.status(500).json(err))
-    }
+    // remove friend
+    // removeFriend(res, req){
+    //     console.log (req.params.userId)
+    //     User.findOneAndUpdate(
+    //     { _id: req.params.userId },
+    //     { $pull: { friends: req.params.friendId } },
+    //     { new: true }
+    //     )
+    //     .then((friendData) => res.json(friendData))
+    //     .catch((err) => res.status(500).json(err))
+    // }
 }

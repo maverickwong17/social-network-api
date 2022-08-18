@@ -13,7 +13,7 @@ const reactionSchema = new Schema(
         createdAt: { type: Date, default: Date.now, get: formatTime, } // getter method to format
     },
     {
-        toJSON: {virtuals: true},
+        toJSON: {virtuals: true, getters: true},
         id: false
     }
 )
@@ -27,14 +27,10 @@ const thoughtSchema = new Schema(
         reaction: [reactionSchema],
     },
     {
-        toJSON: { virtuals: true ,  getters: true },
+        toJSON: { virtuals: true , getters: true},
         id: false
     }
 )
-
-
-// reactionSchema.get(function(v){})
-// thoughtSchema.get(function(v){})
 
 
 thoughtSchema.virtual('reactionCount').get(function(v){
