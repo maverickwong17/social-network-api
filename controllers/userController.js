@@ -2,11 +2,13 @@ const User = require('../models/User')
 const Thought = require('../models/Thought')
 
 module.exports = {
+    // get all
     getUsers(req, res) {
         User.find()
             .then((users) => res.json(users))
             .catch((err) => res.status(500).json(err));
     },
+    // get one
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
             .select('-__v')
@@ -19,20 +21,23 @@ module.exports = {
                 )
             .catch((err) => res.status(500).json(err));
     },
+    // create user
     createUser(req, res) {
         User.create(req.body)
             .then((dbUserData) => res.json(dbUserData))
             .catch((err) => res.status(500).json(err));
     },
+    // update user ID/email
     updateUser(req, res) {
         User.findOneAndUpdate(
-            { _id: req.body.userId },
+            { _id: req.params.userId },
             { $set: req.body },
-            { runValidators: true, new: true }
+            { runValidators: true, new : true }
         )
         .then(() => res.json({ message: 'User updated!' }))
         .catch((err) => res.status(500).json(err));
     },
+    // delete user and all associated thoughts
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
             .then((user) =>
@@ -43,4 +48,22 @@ module.exports = {
             .then(() => res.json({ message: 'User and associated apps deleted!' }))
             .catch((err) => res.status(500).json(err));
     },
+    addFriend(res, req){
+        User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { friends: req.params.friendId } },
+        { new: true }
+        )
+        .then((dbThoughtData) => res.json(dbThoughtData))
+        .catch((err) => res.status(500).json(err))
+    },
+    removeFriend(res, req){
+        User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $pull: { friends: req.params.friendId } },
+        { new: true }
+        )
+        .then((dbThoughtData) => res.json(dbThoughtData))
+        .catch((err) => res.status(500).json(err))
+    }
 }
