@@ -49,27 +49,23 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
     // add friend
-    addFriend(res, req){
-        console.log ('in add friend')
-        // console.log (req.params.userId)
-        // console.log (req.params.friendId)
+    addFriend(req, res){
         User.findOneAndUpdate(
             { _id: req.params.userId },
-        { $addToSet: { friends: req.params.friendId } },
-        { new: true }
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true }
         )
         .then((friendData) => res.json(friendData))
         .catch((err) => res.status(500).json(err))
     },
     // remove friend
-    // removeFriend(res, req){
-    //     console.log (req.params.userId)
-    //     User.findOneAndUpdate(
-    //     { _id: req.params.userId },
-    //     { $pull: { friends: req.params.friendId } },
-    //     { new: true }
-    //     )
-    //     .then((friendData) => res.json(friendData))
-    //     .catch((err) => res.status(500).json(err))
-    // }
+    removeFriend(req, res){
+        User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { friends: req.params.friendId } },
+        { new: true }
+        )
+        .then((friendData) => res.json(friendData))
+        .catch((err) => res.status(500).json(err))
+    }
 }
