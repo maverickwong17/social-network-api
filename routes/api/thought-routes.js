@@ -11,7 +11,6 @@ const {
   
 router.route('/').get(getThoughts).post(createThought);
 router.route('/:thoughtId').get(getSingleThought).put(updateThought).delete(deleteThought)
-
 router.route('/reactions/:thoughtId').post(addReaction).delete(removeReaction)
 
 module.exports = router;
